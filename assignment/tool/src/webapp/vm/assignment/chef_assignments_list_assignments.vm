@@ -72,7 +72,7 @@
 			$tlang.getString("gen.thearecur1")
 		</p>
 	#else
-	<div class="navPanel row">
+	<div class="navPanel row" style="display: none"> ## OWLTODO: delete this block
 		#if ($allowAddAssignment)
 			#if (!$!view.equals('stuvie'))
 			<div class="col-sm-5 col-xs-12">
@@ -105,6 +105,27 @@
 			<div class="col-lg-6 col-md-7 col-sm-9 col-xs-12">
 		#end
 			#paginator( $topMsgPos $btmMsgPos $allMsgNumber $pagesize $goFPButton $goPPButton $goNPButton $goLPButton $sakai_csrf_token $pagesizes )
+		</div>
+	</div>
+	
+	<div class="sakai-table-toolBar">
+		<div class="sakai-table-filterContainer">
+			#if ($allowAddAssignment)
+				#if (!$!view.equals('stuvie'))
+					#define($viewSelectOptions)
+					<option value="lisofass1" #if($!view.equals('lisofass1'))selected="selected"#end >$!tlang.getString('lisofass1')</option>
+					<option value="lisofass2" #if($!view.equals('lisofass2'))selected="selected"#end >$!tlang.getString('lisofass2')</option>
+					#end
+					#viewFilterPanel("viewFilterForm", $viewSelectOptions, "doView")
+				#else
+					$tlang.getString("stulistassig.selanass1")
+				#end
+			#else
+				$tlang.getString("stulistassig.selanass")
+			#end
+		</div>
+		<div class="sakai-table-pagerContainer">
+			#pagerPanel("pager1")
 		</div>
 	</div>
 

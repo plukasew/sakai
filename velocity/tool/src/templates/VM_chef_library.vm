@@ -645,3 +645,68 @@ scheduleUpdate();
 
 #macro (siteLink $siteId)${config.getPortalUrl()}/site/${siteId}#end
 
+#macro (viewFilterPanel $panelName $selectOptions $actionKey)
+<script type="text/javascript">
+    function doChangeView(url, selectElement)
+    {
+        SPNR.disableControlsAndSpin( selectElement, null );
+        var selectedView = selectElement.options[selectElement.selectedIndex].value;
+        location = url + "&view=" + selectedView;
+        return true;
+    }
+</script>
+<div class="sakai-table-viewFilter">
+	<label for="viewFilter_$panelName">$tlang.getString("view.label")</label>
+	<span class="skip">$tlang.getString("gen.listnavselect")</span>
+	<select id="viewFilter_$panelName" name="view" onchange="doChangeView('#toolLink("$action", "$actionKey")', this);">
+		$selectOptions
+	</select>
+</div>
+#end ## viewFilterPanel
+
+#macro (pagerPanel $panelName)
+<script type="text/javascript">
+    function doChangePageSize(url, selectElement)
+    {
+        SPNR.disableControlsAndSpin( selectElement, null );
+        var selectedPageSizeValue = selectElement.options[selectElement.selectedIndex].value;
+        location = url + "&selectPageSize=" + selectedPageSizeValue;
+        return true;
+    }
+    function doPageNav(url, buttonElement)
+    {
+		SPNR.disableControlsAndSpin(buttonElement, null);
+		location = url;
+		return true;
+    }
+</script>
+<div class="sakai-table-pagerLabel">$tlang.getFormattedMessage("gen.viewing.phrase", $topMsgPos, $btmMsgPos, $allMsgNumber)</div>
+<div class="sakai-table-pagerControls">
+	<span class="skip">$tlang.getString("gen.first")</span>
+	<input type="button" name="eventSubmit_doList_first" value="&#124;&lt;" title="$tlang.getString("gen.first")"
+		onclick="doPageNav('#toolLink("$action", "doList_first")', this);" #if ($goFPButton != "true") disabled="disabled" #end />
+
+	<span class="skip">$tlang.getFormattedMessage('gen.previous.pagesize', $pagesize)</span>
+	<input type="button" name="eventSubmit_doList_prev" value="&lt;" title="$tlang.getFormattedMessage('gen.previous.pagesize', $pagesize)"
+		onclick="doPageNav('#toolLink("$action", "doList_prev")', this);" #if ($goPPButton != "true") disabled="disabled" #end />
+
+	<label for="selectPageSize_$formName">$tlang.getString("gen.select.label")</label>
+	<span class="skip">$tlang.getString("gen.listnavselect")</span>
+	<div class="sakai-table-pagerPageSize">
+		<select name="selectPageSize" onchange="doChangePageSize('#toolLink("$action", "doChange_pagesize")', this);">
+		#foreach ($i in $!pagesizes)
+			<option value="$i" #if($pagesize == $i) selected="selected" #end>$tlang.getFormattedMessage("gen.show", $i)</option>
+		#end
+		</select>
+	</div>
+
+	<span class="skip">$tlang.getFormattedMessage('gen.next.pagesize', $pagesize)</span>
+	<input type="button" name="eventSubmit_doList_next" value="&gt;" title="$tlang.getFormattedMessage('gen.next.pagesize', $pagesize)"
+		onclick="doPageNav('#toolLink("$action", "doList_next")', this);" #if($goNPButton != "true") disabled="disabled" #end />
+
+	<span class="skip">$tlang.getString('gen.last')</span>
+	<input type="button" name="eventSubmit_doList_last" value="&gt;&#124;" title="$tlang.getString('gen.last')"
+		onclick="doPageNav('#toolLink("$action", "doList_last")', this);" #if ($goLPButton != "true") disabled="disabled" #end />
+</div>
+#end ## pagerPanel
+

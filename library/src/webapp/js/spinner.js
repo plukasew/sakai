@@ -123,7 +123,7 @@ SPNR.disableControlsAndSpin = function( clickedElement, escapeList )
 
     SPNR.disableInputs( clickedElement, escapeList );
     SPNR.disableLinkPointers( escapeList );
-    SPNR.disableSelects( escapeList );
+    SPNR.disableSelects( clickedElement, escapeList );
     SPNR.disableTextAreas( escapeList );
 };
 
@@ -191,9 +191,10 @@ SPNR.disableInputs = function( clickedElement, escapeList )
 /**
  * This function clones and disables all 'select' elements on the page.
  * 
+ * @param {DOM Element} clickedElement - the element being interacted with
  * @param {Array[String]} escapeList - array of IDs you do not wish to be disabled
  */
-SPNR.disableSelects = function( escapeList )
+SPNR.disableSelects = function( clickedElement, escapeList )
 {
     // Clone and disable all drop downs (disable the clone, hide the original)
     var dropDowns = SPNR.nodeListToArray( document.getElementsByTagName( "select" ) );
@@ -216,10 +217,26 @@ SPNR.disableSelects = function( escapeList )
             newSelect.className = select.className;
             newSelect.innerHTML = select.innerHTML;
             newSelect.selectedIndex = select.selectedIndex;
+            
+            if (select === clickedElement)
+            {
+                // wrap it
+                var wrapper = document.createElement("span");
+                wrapper.className = "spinSelect";
+                wrapper.appendChild(newSelect);
+                // transfer any margins from the original select to the wrapper
+                wrapper.style.margin = select.style.margin;
 
-            // Add the clone to the DOM where the original was
-            var parent = select.parentNode;
-            parent.insertBefore( newSelect, select );
+                // insert it
+                var parent = select.parentNode;
+                parent.insertBefore(wrapper, select);
+            }
+            else
+            {
+                // Add the clone to the DOM where the original was
+                var parent = select.parentNode;
+                parent.insertBefore( newSelect, select );
+            }
         }
     }
 };
@@ -316,3 +333,4 @@ SPNR.disableElementAndSpin = function( divID, element, activateSpinner )
         parent.insertBefore( newElement, element );
     }
 };
+

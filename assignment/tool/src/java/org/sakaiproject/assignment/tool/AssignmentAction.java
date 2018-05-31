@@ -5232,13 +5232,13 @@ public class AssignmentAction extends PagedResourceActionII {
 
         ParameterParser params = data.getParameters();
         String option = params.getString("option");
-        if ("changeView".equals(option)) {
+        /*if ("changeView".equals(option)) {
             doChange_submission_list_option(data);
         } else if ("search".equals(option)) {
             state.setAttribute(VIEW_SUBMISSION_SEARCH, params.getString("search"));
         } else if ("clearSearch".equals(option)) {
             state.removeAttribute(VIEW_SUBMISSION_SEARCH);
-        } else if ("download".equals(option)) {
+        } else */if ("download".equals(option)) {
             // go to download all page
             doPrep_download_all(data);
         } else if ("upload".equals(option)) {
@@ -5250,6 +5250,22 @@ public class AssignmentAction extends PagedResourceActionII {
         }
 
     } // doView_submission_list_option
+	
+	public void doView_submission_list_search(RunData data)
+	{
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+        ParameterParser params = data.getParameters();
+		state.setAttribute(VIEW_SUBMISSION_SEARCH, params.getString("search"));
+	}
+	
+	public void doView_submission_list_search_clear(RunData data)
+	{
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+        ParameterParser params = data.getParameters();
+		state.removeAttribute(VIEW_SUBMISSION_SEARCH);
+	}
 
     /**
      * Action is to view the content of one specific assignment submission

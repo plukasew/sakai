@@ -43,7 +43,7 @@
 		
 
 
-	
+<script type="text/javascript" src="/library/js/spinner.js$!{portalCdnQuery}"></script>
 <div class="portletBody container-fluid">
 	#if ($isOnWorkspaceTab.equals("false"))
 		#if($menu && $EnabledMenuItemExists)
@@ -425,7 +425,7 @@
 					</div>
 
 					#if ($alertMessage)<div class="alertMessage">$tlang.getFormattedMessage("gen.alert.message", $alertMessage)</div><div class="clear"></div>#end
-					<div class="navPanel">
+					<div class="navPanel" style="display: none"> ## OWLTODO: delete this duplicate panel
 						<div class="viewNav">
 							<form name="viewForm" class="inlineForm" method="post" action="#toolForm("$action")">
 								<input type="hidden" name="eventSubmit_doView" value="view" />
@@ -444,11 +444,12 @@
 							</form>
 						</div>
 						#if ($messageListVector.iterator().hasNext())
-							<div class="listNav">
-								<div class="instruction">
+							<div class="sakaiPager">
+								<div class="sakaiPagerHeading">
 									$tlang.getFormattedMessage("gen.viewing.phrase", $topMsgPos, $btmMsgPos, $allMsgNumber)
 								</div>
 								#if ($pagesize != 0)
+								<div class="sakaiPagerBody">
 									#if ($goFPButton == "true")
 										<form name="firstpageForm" class="inlineForm"  method="post" action="#toolForm("$action")">
 											<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("gen.first")" /></fieldset>
@@ -472,8 +473,8 @@
 										</form>
 									#end
 								#end
-							
-								<form name="pagesizeForm" class="inlineForm" method="post" action="#toolForm("$action")">
+
+								<form name="pagesizeForm" class="inlineForm sakaiPagerPageSize" method="post" action="#toolForm("$action")">
 									<input type="hidden" name="eventSubmit_doChange_pagesize" value="changepagesize" />
 									<span class="skip">$tlang.getString("gen.listnavselect")</span>
                                     <label for="selectPageSize" class="skip">$tlang.getString("gen.select.label")</label>
@@ -511,8 +512,46 @@
 										</form>
 									#end
 								#end
+								</div>
 							</div>
 						</div> ##end navPanel
+
+## navPanel2 start
+
+					<div class="sakai-table-toolBar">
+						<div class="sakai-table-filterContainer">
+							#define($viewSelectOptions)
+							<option value="view.all" #if ($!view == "'view.all")selected="selected"#end >$!tlang.getString('view.all')</option>
+							<option value="view.public"  #if ($!view == "view.public")selected="selected"#end >$!tlang.getString('view.public')</option>
+							<option value="view.bygroup" #if ($!view == "view.bygroup")selected="selected"#end >$!tlang.getString('view.bygroup')</option>
+							#end
+							#viewFilterPanel("viewFilterForm", $viewSelectOptions, "doView")
+						</div>
+						#if ($messageListVector.iterator().hasNext())
+						<div class="sakai-table-pagerContainer">
+							#pagerPanel("pager1")
+						</div>
+						#end
+					</div> ##end navPanel
+
+
+
+## navPanel2 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 						<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
 						<div class="table-responsive">
 							<table class="table table-hover table-striped table-bordered" summary="$tlang.getString('gen.tablecaptionsite')">

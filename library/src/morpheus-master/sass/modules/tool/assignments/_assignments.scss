@@ -481,5 +481,71 @@
 			background-color: #eee;
 		}
 	}
+	
+	/* content-specific breakpoints for the table toolbar on the Assignments pages */
+	@media all and (max-width: 680px)
+	{
+		.sakai-table-toolBar
+		{
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			
+			.sakai-table-filterContainer, .sakai-table-viewFilter
+			{
+				margin-right: 0;
+			}
+		}	
+	}
+	
+	@media all and (max-width: 400px)
+	{
+		.sakai-table-pagerControls
+		{
+			flex-wrap: wrap;
+			justify-content: center;
+			
+			.sakai-table-pagerPageSize
+			{
+				order: -1;
+				width: 100%;
+				margin-bottom: 10px;
+			}
+			
+			button, input
+			{
+				line-height: 1.5;
+			}
+			
+			select
+			{
+				margin-left: 0;
+			}
+		}
+	}
+	
+	/* break earlier on the submissions list page */
+	form[name=listSubmissionsForm]
+	{
+		@media all and (max-width: 1024px)
+		{
+			.sakai-table-toolBar
+			{
+				flex-direction: column;
+				align-items: center;
+				justify-content: flex-start;
 
+				.sakai-table-filterContainer, .sakai-table-viewFilter
+				{
+					margin-right: 0;
+				}
+				
+				.sakai-table-filterContainer
+				{
+					flex-direction: column;
+					align-items: center;
+				}
+			}	
+		}
+	}
 }

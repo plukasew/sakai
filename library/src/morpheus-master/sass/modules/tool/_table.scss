@@ -36,3 +36,94 @@ table{
 		}
 	}
 }
+
+.sakai-table-toolBar
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	margin: 0;
+	
+	.sakai-table-filterContainer
+	{
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 50%;
+		margin: 0 20px 10px 0;
+	}
+	@media all and (max-width: 1024px)
+	{
+		.sakai-table-filterContainer
+		{
+			max-width: none;
+		}
+		.sakai-table-viewFilter, .sakai-table-searchFilter
+		{
+			flex-wrap: wrap;
+		}
+	}
+	
+	.sakai-table-filterContainer label
+	{
+		margin: 0 4px 0 0;
+	}
+	.sakai-table-viewFilter, .sakai-table-searchFilter
+	{
+		display: flex;
+		align-items: center;
+		margin: 10px 10px 0 0;
+	}
+	
+	.sakai-table-searchFilter input[type=button], .sakai-table-searchFilter input[type=submit]
+	{
+		margin: 0 10px 0 0;
+	}
+	
+	.sakai-table-searchFilter input[type=text]
+	{
+		margin-right: 4px;
+	}
+	
+	.sakai-table-pagerContainer
+	{
+		margin-bottom: 10px;
+		text-align: center;
+	}
+	.sakai-table-pagerLabel
+	{
+		padding: 0 5px 3px 5px;
+		font-size: 12px;
+		color: #777;
+		text-align: center;
+	}
+	.sakai-table-pagerControls
+	{
+		display: flex;
+		justify-content: center;
+		padding: 0;
+	}
+	.sakai-table-pagerControls label
+	{
+		display: none;
+	}
+	.sakai-table-pagerControls input, .sakai-table-pagerControls button
+	{
+		font-size: 12px;
+		line-height: 1;
+	}
+	.sakai-table-pagerControls input, .sakai-table-pagerControls select, .sakai-table-pagerControls button
+	{
+		margin: 0 0 0 10px;
+	}
+	
+	.sakai-table-pagerControls input:first-of-type, .sakai-table-pagerControls button:first-of-type
+	{
+		margin-left: 0;
+	}
+}
+
+.sakai-table-toolBar.sakai-table-toolBar-pagerOnly
+{
+	justify-content: flex-end;
+}

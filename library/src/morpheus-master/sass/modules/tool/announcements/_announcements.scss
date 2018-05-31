@@ -40,5 +40,170 @@
 		margin-bottom: 20px;
 		border: 1px solid darken( $tool-background-color, 10% );
 		border-radius: 4px;		
-	}	
+	}
+
+	/*.page-header
+	{
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		margin-top: 20px;
+		
+		h3
+		{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			margin: 0;
+		}
+		
+		small
+		{
+			line-height: 2;
+		}
+	}*/
+	
+	.sakaiPager
+	{
+		margin: 0;
+		text-align: center;
+
+		.sakaiPagerHeading
+		{
+			padding: 0 5px 3px 5px;
+			color: #777777;
+		}
+
+		.sakaiPagerBody
+		{
+			display: flex;
+			padding: 0;
+
+			input
+			{
+				margin: 0 5px;
+			}
+			
+			.inlineForm
+			{
+				&:first-child
+				{
+					input
+					{
+						margin-left: 0;
+					}
+				}
+				&:last-child
+				{
+					input
+					{
+						margin-right: 0;
+					}
+				}
+			}
+
+			select
+			{
+				margin: 0 5px;
+			}
+			
+			legend
+			{
+				display: none;
+			}
+			
+			fieldset
+			{
+				display: inline;
+			}
+		}
+	}
+	
+	.navPanel
+	{
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		flex-wrap: wrap;
+		margin: 0;
+		
+		.viewNav
+		{
+			margin-bottom: 10px;
+			margin-right: 20px;
+		}
+		
+		.sakaiPager
+		{
+			margin-bottom: 10px;
+		}
+	}
+	
+	/* content-specific breakpoints for the Announcements page */
+	@media all and (max-width: 600px)
+	{
+		.sakai-table-toolBar
+		{
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			
+			.sakai-table-filterContainer, .sakai-table-viewFilter
+			{
+				margin-right: 0;
+			}
+		}	
+	}
+	
+	@media all and (max-width: 400px)
+	{
+		.sakai-table-pagerControls
+		{
+			flex-wrap: wrap;
+			justify-content: center;
+			
+			.sakai-table-pagerPageSize
+			{
+				order: -1;
+				width: 100%;
+				margin-bottom: 10px;
+			}
+			
+			button, input
+			{
+				line-height: 1.5;
+			}
+			
+			select
+			{
+				margin-left: 0;
+			}
+		}
+	}
+	
+	@media all and (max-width: 600px)
+	{
+		.navPanel
+		{
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+		}	
+	}
+	
+	@media all and (max-width: 400px)
+	{
+		.sakaiPagerBody
+		{
+			flex-wrap: wrap;
+			justify-content: center;
+			
+			.sakaiPagerPageSize
+			{
+				order: -1;
+				width: 100%;
+				margin-bottom: 10px;
+			}
+		}
+	}
 }

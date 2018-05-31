@@ -70,88 +70,7 @@ function printView(url) {
 		</div>
 	#end
 
-	<div class="row">
-		<div class="col-xs-12">
-
-		<form name="viewForm" id="viewForm" class="inlineForm" method="post" action="#toolForm("AssignmentAction")">
-			<input type="hidden" name="assignmentId" id = "assignmentId" value=$validator.escapeUrl($!assignmentReference) />
-			<input type="hidden" name="option" id="option" value="x" />
-			<input type="hidden" name="eventSubmit_doView_submission_list_option" value="x" />
-			## show the view by group choice when there is at least one group defined
-			#if (!$assignment.IsGroup)
-				#if (!$value_CheckAnonymousGrading && $!groups.hasNext())
-					<div class="form-group spinnerBesideContainer">
-						<label class="col-md-2" for="view">
-							$tlang.getString("gen.view2")
-						</label>
-						<div class="col-md-10">
-							<span class="skip">$tlang.getString("newassig.selectmessage")</span>
-							<select id="view" name="view" size="1" tabindex="3" onchange="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'changeView', null, null ); return false;">
-								#if (!$showSubmissionByFilterSearchOnly)
-									<option value="all" #if($!view.equals("all"))selected="selected"#end >$tlang.getString('gen.viewallgroupssections')</option>
-								#else
-									<option value="" >$tlang.getString('please_select_group')</option>
-								#end
-								#foreach($aGroup in $groups)
-									<option value="$!aGroup.Reference" #if($!view.equals($!aGroup.Reference))selected="selected"#end >$validator.escapeHtml($aGroup.Title)</option>
-								#end
-							</select>
-						</div>
-					</div>
-				#end
-
-				#if (!$value_CheckAnonymousGrading)
-					<div class="form-group">
-						<label class="col-md-2" for="$form_search">$tlang.getString("search_students")</label>
-						<div class="col-md-10">
-							<input value="$validator.escapeHtml($searchString)" placeholder="$tlang.getString( "search_student_instruction" )" name="search" id="search" type="text" class="searchField" size="20" />
-							<input type="button" value="$tlang.getString('search')" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'search', null, null ); return false;" />
-							#if (($!searchString) && (!$searchString.equals("")))
-								<input type="button" class="button" value="$tlang.getString("search_clear")" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'clearSearch', null, null ); return false;" />
-							#end
-						</div>
-					</div>
-				#end
-			#end
-			#set($disableGrade=false)
-			#if($assignment.AllowPeerAssessment && !$isPeerAssessmentClosed)
-				#set($disableGrade=true)
-			#end
-			#set ($showMsg = false)
-			#set ($showMsg = $!allMsgNumber)
-			#if (!$!showMsg || $showMsg == 0)
-				<div class="allPurpose">
-					$tlang.getString("nostudent_searchview")
-				</div>
-			#else
-				<div class="listNav">
-						## download all
-							<a href="" class="noPointers" id="downloadAll" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'download', null, null ); return false;" title="$!tlang.getString('downall')">$!tlang.getString('downall')</a>
-						#if(!$disableGrade)
-							## upload all
-							|  <a href="" class="noPointers" id="uploadAll" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'upload', null, null ); return false;" title="$!tlang.getString('uploadall.title')">$!tlang.getString('uploadall.title')</a>
-							|  <a href="" class="noPointers" id="releaseGrades" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'releaseGrades', null, null ); return false;"
-							#if ($withGrade)
-								title="$!tlang.getString('relgrad')">$!tlang.getString('relgrad')</a>
-							#else
-								title="$!tlang.getString('relcommented')">$!tlang.getString('relcommented')</a>
-							#end
-						#end
-						#if ($taggable)
-							#foreach ($provider in $providers)
-								#set ($helperInfo = false)
-								#set ($helperInfo = $provider.provider.getItemsHelperInfo($activity.Reference))
-								#if ($helperInfo)
-									|  <a id="helpItems" class="noPointers" onclick="SPNR.insertSpinnerAfter( this, escapeList, null );" href="#toolLinkParam("$action" "doHelp_items" "activityRef=$validator.escapeUrl($activity.Reference)&providerId=$validator.escapeUrl($provider.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a>
-								#end
-							#end
-						#end
-				</div>	
-				#set ($gradeType = $typeOfGrade)
-			#end
-			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
-		</form>
-
+	<div class="sakai-table-toolBar">
 		#set ($showMsg = false)
 		#set ($showMsg = $!allMsgNumber)
 		#if (!$!showMsg || $showMsg == 0)
@@ -191,12 +110,100 @@ function printView(url) {
 			#end
 			</div>
 		</div>
-		</div>
-		<div class="col-lg-6 col-md-7 col-xs-12 pull-right">
+		<form name="viewForm" id="viewForm" class="inlineForm" method="post" action="#toolForm("AssignmentAction")">
+			<input type="hidden" name="assignmentId" id = "assignmentId" value=$validator.escapeUrl($!assignmentReference) />
+			<input type="hidden" name="option" id="option" value="x" />
+			<input type="hidden" name="eventSubmit_doView_submission_list_option" value="x" />
+			## show the view by group choice when there is at least one group defined
+#*			#if (!$assignment.IsGroup)
+				#if (!$value_CheckAnonymousGrading && $!groups.hasNext())
+					<div class="form-group spinnerBesideContainer">
+						<label class="col-md-2" for="view">
+							$tlang.getString("gen.view2")
+						</label>
+						<div class="col-md-10">
+							<span class="skip">$tlang.getString("newassig.selectmessage")</span>
+							<select id="view" name="view" size="1" tabindex="3" onchange="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'changeView', null, null ); return false;">
+								#if (!$showSubmissionByFilterSearchOnly)
+									<option value="all" #if($!view.equals("all"))selected="selected"#end >$tlang.getString('gen.viewallgroupssections')</option>
+								#else
+									<option value="" >$tlang.getString('please_select_group')</option>
+								#end
+								#foreach($aGroup in $groups)
+									<option value="$!aGroup.Reference" #if($!view.equals($!aGroup.Reference))selected="selected"#end >$validator.escapeHtml($aGroup.Title)</option>
+								#end
+							</select>
+						</div>
+					</div>
+				#end
+
+				#if (!$value_CheckAnonymousGrading)
+					<div class="form-group">
+						<label class="col-md-2" for="$form_search">$tlang.getString("search_students")</label>
+						<div class="col-md-10">
+							<input value="$validator.escapeHtml($searchString)" placeholder="$tlang.getString( "search_student_instruction" )" name="search" id="search" type="text" class="searchField" size="20" />
+							<input type="button" value="$tlang.getString('search')" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'search', null, null ); return false;" />
+							#if (($!searchString) && (!$searchString.equals("")))
+								<input type="button" class="button" value="$tlang.getString("search_clear")" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'clearSearch', null, null ); return false;" />
+							#end
+						</div>
+					</div>
+				#end
+			#end
+*#
+			#set($disableGrade=false)
+			#if($assignment.AllowPeerAssessment && !$isPeerAssessmentClosed)
+				#set($disableGrade=true)
+			#end
+			#set ($showMsg = false)
+			#set ($showMsg = $!allMsgNumber)
+			#if (!$!showMsg || $showMsg == 0)
+				<div class="allPurpose">
+					$tlang.getString("nostudent_searchview")
+				</div>
+			#else
+				<div class="listNav">
+						## download all
+							<a href="" class="noPointers" id="downloadAll" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'download', null, null ); return false;" title="$!tlang.getString('downall')">$!tlang.getString('downall')</a>
+						#if(!$disableGrade)
+							## upload all
+							|  <a href="" class="noPointers" id="uploadAll" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'upload', null, null ); return false;" title="$!tlang.getString('uploadall.title')">$!tlang.getString('uploadall.title')</a>
+							|  <a href="" class="noPointers" id="releaseGrades" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'releaseGrades', null, null ); return false;"
+							#if ($withGrade)
+								title="$!tlang.getString('relgrad')">$!tlang.getString('relgrad')</a>
+							#else
+								title="$!tlang.getString('relcommented')">$!tlang.getString('relcommented')</a>
+							#end
+						#end
+						#if ($taggable)
+							#foreach ($provider in $providers)
+								#set ($helperInfo = false)
+								#set ($helperInfo = $provider.provider.getItemsHelperInfo($activity.Reference))
+								#if ($helperInfo)
+									|  <a id="helpItems" class="noPointers" onclick="SPNR.insertSpinnerAfter( this, escapeList, null );" href="#toolLinkParam("$action" "doHelp_items" "activityRef=$validator.escapeUrl($activity.Reference)&providerId=$validator.escapeUrl($provider.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a>
+								#end
+							#end
+						#end
+				</div>	
+				#set ($gradeType = $typeOfGrade)
+			#end
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		</form>
+
+#*		<div class="col-lg-6 col-md-7 col-xs-12 pull-right">
 			#paginator( $topMsgPos $btmMsgPos $allMsgNumber $pagesize $goFPButton $goPPButton $goNPButton $goLPButton $sakai_csrf_token $pagesizes )
 		</div>
+*#
 	</div>
 
+	
+	
+
+	
+
+	
+	
+	
 		<form name= "listSubmissionsForm" action="#toolForm("AssignmentAction")" method="post">
 			<input type="hidden" name="assignmentId" value="$assignmentReference" />
 			
@@ -412,6 +419,58 @@ function printView(url) {
 			#if($disableGrade)
 				<div class="highlight">$tlang.getFormattedMessage("peerassessment.cantgradewithdate", $!service.getUsersLocalDateTimeString($assignment.PeerAssessmentPeriodDate))</div>
 			#end
+			
+			
+			
+			<div class="sakai-table-toolBar">
+				<div class="sakai-table-filterContainer">
+					#if (!$assignment.IsGroup)
+						#if (!$value_CheckAnonymousGrading && $!groups.hasNext())
+							#define($viewSelectOptions)
+								#if (!$showSubmissionByFilterSearchOnly)
+									<option value="all" #if($!view.equals("all"))selected="selected"#end >$tlang.getString('gen.viewallgroupssections')</option>
+								#else
+									<option value="" >$tlang.getString('please_select_group')</option>
+								#end
+								#foreach($aGroup in $groups)
+									<option value="$!aGroup.Reference" #if($!view.equals($!aGroup.Reference))selected="selected"#end >$validator.escapeHtml($aGroup.Title)</option>
+								#end
+							#end
+							#viewFilterPanel("viewFilterForm", $viewSelectOptions, "doChange_submission_list_option")
+						#end
+						#if (!$value_CheckAnonymousGrading)
+							<div class="sakai-table-searchFilter">
+								<label for="$form_search">$tlang.getString("search_students")</label>
+								<div class="sakai-table-searchFilterControls">
+									<script>
+										function doSearch(url)
+										{
+											var searchText = $('#$form_search' ).val();
+											location = url + "&search=" + searchText;
+											return true;
+										}
+									</script>
+									<input value="$validator.escapeHtml($searchString)" placeholder="$tlang.getString( "search_student_instruction" )" name="$form_search" id="$form_search" type="text" class="searchField" size="20" />
+									##<input type="button" value="$tlang.getString('search')" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'search', null, null ); return false;" />
+									<input type="button" value="$tlang.getString('search')" onclick="SPNR.disableControlsAndSpin( this, escapeList ); doSearch('#toolLink($action "doView_submission_list_search")');" />
+									#if (($!searchString) && (!$searchString.equals("")))
+										<input type="button" class="button" value="$tlang.getString("search_clear")" onclick="SPNR.disableControlsAndSpin( this, escapeList ); ASN.submitForm( 'viewForm', 'clearSearch', null, null ); return false;" />
+									#end
+								</div>
+							</div>
+						#end
+					#end
+					
+				</div>
+				<div class="sakai-table-pagerContainer">
+					#pagerPanel("pager1")
+				</div>
+			</div>
+			
+			
+			
+			
+			
 			## show all submission
 			<table class="listHier lines nolines" id ="submissionList" cellpadding="0" cellspacing="0" summary="$tlang.getString("gen.viewassliststudentsummary")">
 				<tr>
